@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 }
 
 export default async function page() {
-  const users = await db.query.users.findMany()
+  const users = await db.query.user.findMany()
   console.log(users, 'users')
 
   return <LoginForm />

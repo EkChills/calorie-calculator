@@ -1,19 +1,6 @@
-import { db, pgTable } from '@/app/db/schema'
-import { DrizzleAdapter } from '@auth/drizzle-adapter'
-import NextAuth, { AuthOptions } from 'next-auth'
-import { Adapter } from 'next-auth/adapters'
-import GithubProvider from 'next-auth/providers/github'
-import GoogleProvider from 'next-auth/providers/google'
+import { authOptions } from '@/auth'
 
-const authOptions: AuthOptions | any = {
-  adapter: DrizzleAdapter(db),
-  providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_ID as string,
-      clientSecret: process.env.GOOGLE_SECRET as string,
-    }),
-  ],
-}
+import NextAuth from 'next-auth/next'
 
 const handler = NextAuth(authOptions)
 

@@ -7,5 +7,5 @@ export default defineConfig({
   dbCredentials: {
     url: process.env.DATABASE_url as string,
   },
-  tablesFilter: 'calorie_calc_*',
+  tablesFilter: ['calorie_calc_*'],
 })
