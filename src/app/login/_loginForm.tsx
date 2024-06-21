@@ -3,47 +3,63 @@
 import React from 'react'
 import { signIn } from 'next-auth/react'
 
-export default function LoginForm() {
-  function handleSignIn() {
-    signIn('google', {
-      callbackUrl: 'http://localhost:3000',
-    })
-  }
+type PageProps = {}
+
+const LoginForm: React.FC<PageProps> = () => {
+  const logo = (
+    <div className="flex h-6 w-6 items-center justify-center rounded-full bg-green-700">
+      <div className="h-[14px] w-[14px] rounded-full bg-white" />
+    </div>
+  )
+
+  const google = (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M21.8055 10.0415H21V10H12V14H17.6515C16.827 16.3285 14.6115 18 12 18C8.6865 18 6 15.3135 6 12C6 8.6865 8.6865 6 12 6C13.5295 6 14.921 6.577 15.9805 7.5195L18.809 4.691C17.023 3.0265 14.634 2 12 2C6.4775 2 2 6.4775 2 12C2 17.5225 6.4775 22 12 22C17.5225 22 22 17.5225 22 12C22 11.3295 21.931 10.675 21.8055 10.0415Z"
+        fill="#FFC107"
+      />
+      <path
+        d="M3.15308 7.3455L6.43858 9.755C7.32758 7.554 9.48058 6 12.0001 6C13.5296 6 14.9211 6.577 15.9806 7.5195L18.8091 4.691C17.0231 3.0265 14.6341 2 12.0001 2C8.15908 2 4.82808 4.1685 3.15308 7.3455Z"
+        fill="#FF3D00"
+      />
+      <path
+        d="M11.9999 22.0001C14.5829 22.0001 16.9299 21.0116 18.7044 19.4041L15.6094 16.7851C14.5717 17.5743 13.3036 18.0011 11.9999 18.0001C9.39891 18.0001 7.19041 16.3416 6.35841 14.0271L3.09741 16.5396C4.75241 19.7781 8.11341 22.0001 11.9999 22.0001Z"
+        fill="#4CAF50"
+      />
+      <path
+        d="M21.8055 10.0415H21V10H12V14H17.6515C17.2571 15.1082 16.5467 16.0766 15.608 16.7855L15.6095 16.7845L18.7045 19.4035C18.4855 19.6025 22 17 22 12C22 11.3295 21.931 10.675 21.8055 10.0415Z"
+        fill="#1976D2"
+      />
+    </svg>
+  )
+
   return (
-    <div className="container mx-auto flex min-h-[100dvh] w-full flex-col items-center justify-center text-center">
-      <div className="flex flex-col gap-1.5">
-        <h2 className="text-2xl font-bold text-primary antialiased md:text-3xl">
-          Sign in to your account
-        </h2>
-        <p className="text-base text-primary">
-          <span className="text-base font-light text-black/55">Or</span>{' '}
-          register for a new account
-        </p>
+    <div className="mx-auto mt-[30vh] flex w-full max-w-[400px] flex-col gap-12 px-4">
+      <div className="flex flex-col gap-2">
+        {logo}
+        <div>
+          <h4 className="text-2xl font-semibold">Welcome to Wind</h4>
+          <p className="text-xs font-semibold opacity-70">
+            Track Your Calories, Transform Your Life.
+          </p>
+        </div>
       </div>
       <button
-        onClick={handleSignIn}
-        className="border-black/12 mt-8 inline-flex items-center justify-center gap-4 rounded-lg border px-10 py-2 transition-all ease-linear hover:bg-black/5 md:px-20 xl:px-32"
+        onClick={() =>
+          signIn('google', { callbackUrl: 'http://localhost:3000' })
+        }
+        className="inline-flex h-[48px] items-center justify-center gap-2 rounded-lg border-none bg-gray-100 text-base font-medium text-black outline-none ring-green-700 transition-all duration-200 ease-linear focus-within:ring-2"
       >
-        <svg
-          className="h-5 w-5"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <circle cx="12" cy="12" r="10" />
-          <circle cx="12" cy="12" r="4" />
-          <line x1="21.17" x2="12" y1="8" y2="8" />
-          <line x1="3.95" x2="8.54" y1="6.06" y2="14" />
-          <line x1="10.88" x2="15.46" y1="21.94" y2="14" />
-        </svg>
-        <span className="text-base text-primary">Sign in with Google</span>
+        {google}
+        Continue with Google
       </button>
     </div>
   )
 }
+export default LoginForm
