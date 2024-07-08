@@ -5,7 +5,7 @@ export default defineConfig({
   schema: './src/app/db/schema.ts',
   dialect: 'postgresql',
   dbCredentials: {
-    url: process.env.DATABASE_url as string,
+    url: process.env.DATABASE_URL as string,
   },
   tablesFilter: ['calorie_calc_*'],
 })
