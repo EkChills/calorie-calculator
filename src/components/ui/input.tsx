@@ -1,6 +1,13 @@
 import * as React from 'react'
 
 import { cn } from '@/lib/utils'
+// AUTH_DRIZZLE_URL='postgres://postgres.lwktgvrweqncnlidinvy:Ekene13881609@aws-0-eu-west-2.pooler.supabase.com:6543/postgres'
+// # DATABASE_URL='postgres://postgres.lwktgvrweqncnlidinvy:Ekene13881609@aws-0-eu-west-2.pooler.supabase.com:5432/postgres'
+// DATABASE_URL=postgresql://damned:damned123@localhost:6543/postgres
+// GOOGLE_ID=1044463983230-tbm6cbrk7dcmu7bk81ka56l72r1agtrk.apps.googleusercontent.com
+// GOOGLE_SECRET=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
+// NEXTAUTH_SECRET="briueriugiergiergoijeriog"
+// NEXTAUTH_URL="http://localhost:3000"
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {}
