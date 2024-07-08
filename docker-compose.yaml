@@ -1,15 +1,11 @@
-version: '3.8'
+version: '3.9'
 services:
   db:
-    restart: always
     image: postgres
-    environment:
-      - POSTGRES_PASSWORD=damned123
-      - POSTGRES_USER=damned
-    volumes:
-      - pgdata:/var/lib/postgresql/data
     ports:
-      - 6543:5432
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: hellodamned
   frontend:
     build:
       context: .
@@ -31,6 +27,5 @@ services:
           path: ./package-lock.json
         - action: rebuild
           path: ./next.config.mjs
-
 volumes:
   pgdata:
