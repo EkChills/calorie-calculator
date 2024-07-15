@@ -1,4 +1,4 @@
-import { AuthOptions } from 'next-auth'
+import { AuthOptions, getServerSession } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import { DrizzleAdapter } from '@auth/drizzle-adapter'
 import { db, pgTable } from '@/app/db'
@@ -13,4 +13,8 @@ export const authOptions: AuthOptions = {
       clientSecret: process.env.GOOGLE_SECRET as string,
     }),
   ],
+}
+
+export const getServerAuthSession = async () => {
+  return await getServerSession(authOptions)
 }

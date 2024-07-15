@@ -52,7 +52,9 @@ const LoginForm: React.FC<PageProps> = () => {
       </div>
       <button
         onClick={() =>
-          signIn('google', { callbackUrl: 'http://localhost:3000' })
+          signIn('google', {
+            callbackUrl: 'http://localhost:3000/login/username',
+          })
         }
         className="inline-flex h-[48px] items-center justify-center gap-2 rounded-lg border-none bg-gray-100 text-base font-medium text-black outline-none ring-green-700 transition-all duration-200 ease-linear focus-within:ring-2"
       >

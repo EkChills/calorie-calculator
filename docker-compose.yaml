@@ -1,11 +1,20 @@
 version: '3.9'
 services:
   db:
-    image: postgres
+    image: postgres:latest
+    restart: always
     ports:
       - 5432:5432
     environment:
       POSTGRES_PASSWORD: hellodamned
+    volumes:
+      - pgData:/var/lib/postgresql/data
+  nginx:
+    image: nginx:alpine
+    ports:
+      - '9000:80'
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
   frontend:
     build:
       context: .
@@ -16,6 +25,7 @@ services:
       - 3000:3000
     depends_on:
       - db
+      - nginx
     develop:
       watch:
         - action: sync
@@ -28,4 +38,4 @@ services:
         - action: rebuild
           path: ./next.config.mjs
 volumes:
-  pgdata:
+  pgData:
