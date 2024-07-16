@@ -1,5 +1,7 @@
 name: Run Staging
-on: [push]
+on:
+  push:
+    branches: main
 jobs:
   staging:
     runs-on: ubuntu-latest
