@@ -9,6 +9,7 @@ import {
   integer,
   uuid,
   pgEnum,
+  varchar,
 } from 'drizzle-orm/pg-core'
 import type { AdapterAccount } from '@auth/core/adapters'
 
@@ -32,6 +33,7 @@ export const pgTable = pgTableCreator((name) => `calorie_calc_${name}`)
 
 export const user = pgTable('user', {
   id: text('id').notNull().primaryKey(),
+  username: varchar('username', { length: 100 }),
   email: text('email').notNull(),
   emailVerified: timestamp('emailVerified', { mode: 'date' }),
   name: text('name'),
@@ -42,25 +44,6 @@ export const user = pgTable('user', {
   password: text('password'),
   createdAt: timestamp('createdAt').defaultNow(),
 })
-
-export const space = pgTable('space', {
-  id: text('id').primaryKey(),
-  hostId: text('hostId')
-    .notNull()
-    .references(() => user.id, { onDelete: 'cascade' }),
-  spaceName: text('space_name'),
-})
-
-export const memberships = pgTable(
-  'memberships',
-  {
-    userId: text('userId'),
-    spaceId: text('spaceId'),
-  },
-  (t) => ({
-    pk: primaryKey(t.userId, t.spaceId),
-  })
-)
 
 export const accounts = pgTable(
   'account',
@@ -92,15 +75,6 @@ export const sessions = pgTable('session', {
   expires: timestamp('expires', { mode: 'date' }).notNull(),
 })
 
-export const customerCode = pgTable('customerCode', {
-  id: uuid('id').defaultRandom().primaryKey(),
-  customerCode: text('code'),
-  createdAt: timestamp('createdAt').defaultNow(),
-  userId: text('userId')
-    .notNull()
-    .references(() => user.id, { onDelete: 'cascade' }),
-})
-
 export const verificationTokens = pgTable(
   'verificationToken',
   {
@@ -112,66 +86,3 @@ export const verificationTokens = pgTable(
     compoundKey: primaryKey(vt.identifier, vt.token),
   })
 )
-
-export const activateToken = pgTable('activateToken', {
-  id: text('id').primaryKey(),
-  token: text('token').unique(),
-  activatedAt: timestamp('activatedAt'),
-  createdAt: timestamp('createdAt').defaultNow(),
-  userId: text('userId'),
-})
-
-export const document = pgTable('document', {
-  id: uuid('id').defaultRandom().primaryKey(),
-  title: text('title'),
-  description: text('description'),
-  userId: text('userId'),
-  html: text('html'),
-  isStarred: boolean('isStarred'),
-  documentStatus: documentStatusEnum('document_status'),
-  spaceId: text('spaceId'),
-})
-
-export const activateTokenRelation = relations(activateToken, ({ one }) => ({
-  user: one(user, {
-    fields: [activateToken.userId],
-    references: [user.id],
-    relationName: 'activateTokenRelation',
-  }),
-}))
-
-export const documentRelation = relations(document, ({ one }) => ({
-  user: one(user, {
-    fields: [document.userId],
-    references: [user.id],
-    relationName: 'documentRelation',
-  }),
-}))
-
-export const userRelation = relations(user, ({ one, many }) => ({
-  activateToken: one(activateToken),
-  memberships: many(memberships),
-}))
-
-export const spaceRelation = relations(space, ({ many }) => ({
-  memberships: many(memberships),
-}))
-
-export const membershipsRelation = relations(memberships, ({ one }) => ({
-  group: one(space, {
-    fields: [memberships.spaceId],
-    references: [space.id],
-  }),
-  user: one(user, {
-    fields: [memberships.userId],
-    references: [user.id],
-  }),
-}))
-
-export const userRelation2 = relations(user, ({ many }) => ({
-  document: many(document),
-}))
-
-export const customerCodeRelation = relations(customerCode, ({ one }) => ({
-  code: one(customerCode),
-}))
