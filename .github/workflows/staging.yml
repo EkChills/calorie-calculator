@@ -2,8 +2,11 @@ name: Run Staging
 on:
   push:
     branches: main
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 jobs:
-  staging:
+  code-integrity-checks:
     runs-on: ubuntu-latest
     steps:
       - name: Get code
@@ -18,12 +21,17 @@ jobs:
           npm ci
       - name: Check prettier
         run: npx prettier . --check
-      - name: Build and Push Docker image to GHCR
-        uses: aleskxyz/build-push@v1
+  build-push-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+    steps:
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
         with:
-          image_name: ${{ github.event.repository.name }}
-          registry_address: ghcr.io/${{ github.repository_owner }}
-          registry_username: ${{ github.actor }}
-          registry_password: ${{ github.token }}
-          platforms: linux/amd64, linux/arm64/v8
-          context: .
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
